@@ -43,6 +43,43 @@ info_print() {
   sleep 2
 }
 
+############
+# Replace List
+############
+
+# List all directories you want to directly replace in the system
+# Construct your list in the following example format
+REPLACE_EXAMPLE="
+/system/app/Youtube
+/system/priv-app/SystemUI
+/system/priv-app/Settings
+/system/framework
+"
+# Construct your own list here
+REPLACE="
+/system/priv-app/AsusLauncherDev
+/system/priv-app/Lawnchair
+/system/priv-app/NexusLauncherPrebuilt
+/system/product/priv-app/ParanoidQuickStep
+/system/product/priv-app/ShadyQuickStep
+/system/product/priv-app/TrebuchetQuickStep
+/system/product/priv-app/NexusLauncherRelease
+/system/product/overlay/PixelLauncherIconsOverlay
+/system/product/overlay/CustomPixelLauncherOverlay
+/system/system_ext/priv-app/NexusLauncherRelease
+/system/system_ext/priv-app/DerpLauncherQuickStep
+/system/system_ext/priv-app/TrebuchetQuickStep
+/system/system_ext/priv-app/Lawnchair
+/system/system_ext/priv-app/PixelLauncherRelease
+/system/system_ext/priv-app/Launcher3QuickStep
+/system/system_ext/priv-app/ArrowLauncher
+/system/system_ext/priv-app/ThemePicker
+/system/system_ext/priv-app/WallpaperPickerGoogleRelease
+/system/product/overlay/ThemedIconsOverlay.apk
+/system/product/overlay/PixelLauncherIconsOverlay.apk
+/system/product/overlay/CustomPixelLauncherOverlay.apk
+"
+
 # Web fetch tool for files & media by iamlooper @ telegram
 # curl: Silent mode (-fsS), redirect to STDOUT (-L) & contents to a file (-o)
 # wget: Silent mode (-q), redirect to STDOUT (-O-) & contents to a file (-O)
@@ -60,6 +97,16 @@ web_fetch() {
 
 # Change the logic to whatever you want
 init_main() {
+  # Get the Android SDK version
+  sdk_version=$(getprop ro.build.version.sdk)
+
+  # Check if the SDK version is 32 or below
+  if [[ $sdk_version -le 32 ]]; then
+    # Fail the script immediately
+    echo "Error: Unsupported SDK version ($sdk_version)"
+    exit 1
+  fi
+
   ui_print ""
   ui_print "[*] Which Android Version are you using?"
   ui_print "[*] Press volume up to switch to another choice"
@@ -97,41 +144,6 @@ init_main() {
   ui_print ""
 
   if [[ "$FCTEXTAD1" == "Android 13" ]]; then
-    ############
-    # Replace List
-    ############
-
-    # List all directories you want to directly replace in the system
-    # Construct your list in the following example format
-    REPLACE_EXAMPLE="
-    /system/app/Youtube
-    /system/priv-app/SystemUI
-    /system/priv-app/Settings
-    /system/framework
-    "
-    # Construct your own list here
-    REPLACE="
-    /system/priv-app/AsusLauncherDev
-    /system/priv-app/Lawnchair
-    /system/priv-app/NexusLauncherPrebuilt
-    /system/product/priv-app/ParanoidQuickStep
-    /system/product/priv-app/ShadyQuickStep
-    /system/product/priv-app/TrebuchetQuickStep
-    /system/product/priv-app/NexusLauncherRelease
-    /system/product/overlay/PixelLauncherIconsOverlay
-    /system/product/overlay/CustomPixelLauncherOverlay
-    /system/system_ext/priv-app/NexusLauncherRelease
-    /system/system_ext/priv-app/DerpLauncherQuickStep
-    /system/system_ext/priv-app/TrebuchetQuickStep
-    /system/system_ext/priv-app/Lawnchair
-    /system/system_ext/priv-app/PixelLauncherRelease
-    /system/system_ext/priv-app/Launcher3QuickStep
-    /system/system_ext/priv-app/ArrowLauncher
-    /system/system_ext/priv-app/ThemePicker
-    /system/product/overlay/ThemedIconsOverlay.apk
-    /system/product/overlay/PixelLauncherIconsOverlay.apk
-    /system/product/overlay/CustomPixelLauncherOverlay.apk
-    "
     rm -rf "$MODPATH/system/product/priv-app/NexusLauncherRelease/NexusLauncherRelease00z.apk"
     rm -rf "$MODPATH/system/product/priv-app/NexusLauncherRelease/NexusLauncherRelease01z.apk"
     rm -rf "$MODPATH/system/product/priv-app/NexusLauncherRelease/NexusLauncherRelease02z.apk"
@@ -140,40 +152,6 @@ init_main() {
     rm -rf "$MODPATH/system/product/priv-app/NexusLauncherRelease/NexusLauncherRelease12z.apk"
 
   elif [[ "$FCTEXTAD1" == "Android 13 QPR" ]]; then
-    ############
-    # Replace List
-    ############
-
-    # List all directories you want to directly replace in the system
-    # Construct your list in the following example format
-    REPLACE_EXAMPLE="
-    /system/app/Youtube
-    /system/priv-app/SystemUI
-    /system/priv-app/Settings
-    /system/framework
-    "
-    # Construct your own list here
-    REPLACE="
-    /system/priv-app/AsusLauncherDev
-    /system/priv-app/Lawnchair
-    /system/priv-app/NexusLauncherPrebuilt
-    /system/product/priv-app/ParanoidQuickStep
-    /system/product/priv-app/ShadyQuickStep
-    /system/product/priv-app/TrebuchetQuickStep
-    /system/product/priv-app/NexusLauncherRelease
-    /system/product/overlay/PixelLauncherIconsOverlay
-    /system/product/overlay/CustomPixelLauncherOverlay
-    /system/system_ext/priv-app/NexusLauncherRelease
-    /system/system_ext/priv-app/TrebuchetQuickStep
-    /system/system_ext/priv-app/Lawnchair
-    /system/system_ext/priv-app/PixelLauncherRelease
-    /system/system_ext/priv-app/Launcher3QuickStep
-    /system/system_ext/priv-app/ArrowLauncher
-    /system/system_ext/priv-app/ThemePicker
-    /system/product/overlay/ThemedIconsOverlay.apk
-    /system/product/overlay/PixelLauncherIconsOverlay.apk
-    /system/product/overlay/CustomPixelLauncherOverlay.apk
-    "
     rm -rf "$MODPATH/system/product/priv-app/NexusLauncherRelease/NexusLauncherRelease00.apk"
     rm -rf "$MODPATH/system/product/priv-app/NexusLauncherRelease/NexusLauncherRelease01.apk"
     rm -rf "$MODPATH/system/product/priv-app/NexusLauncherRelease/NexusLauncherRelease02.apk"
@@ -340,6 +318,7 @@ init_main() {
     rm -rf "$MODPATH/system/product/overlay/TeamFiles_Pill_Light2.apk"
     rm -rf "$MODPATH/system/product/overlay/TeamFiles_Pill_Light_Accent.apk"
     rm -rf "$MODPATH/system/product/overlay/TeamFiles_Pill_Light_Accent2.apk"
+    rm -rf "$MODPATH/system/product/overlay/TeamFiles_UserChip.apk"
     rm -rf "$MODPATH/system/product/priv-app/ExtendedSettings"
     rm -rf "$MODPATH/system/product/etc/permissions/privapp-permissions-com.domain.liranazuz5.extendedsettings.xml"
   fi
@@ -1028,6 +1007,48 @@ init_main() {
     mv -f "$MODPATH/system1.prop" "$MODPATH/system.prop"
     rm -rf "$MODPATH/system2.prop"
     rm -rf "$MODPATH/sepolicy.rule"
+  fi
+
+  ui_print ""
+  ui_print "[*] Do you install new Wallpaper & style app?"
+  ui_print "[*] WARNING: It's still in beta"
+  ui_print "[*] It's features like font changer may not even work"
+  ui_print "depending upon your rom"
+  ui_print "[*] Press volume up to switch to another choice"
+  ui_print "[*] Press volume down to continue with that choice"
+  ui_print ""
+
+  sleep 0.5
+
+  ui_print "--------------------------------"
+  ui_print "[1] Yes"
+  ui_print "--------------------------------"
+  ui_print "[2] No(Recommended)"
+  ui_print "--------------------------------"
+
+  ui_print ""
+  ui_print "[*] Select your desired option:"
+
+  SM=1
+  while true; do
+    ui_print "  $SM"
+    "$VKSEL" && SM="$((SM + 1))" || break
+    [[ "$SM" -gt "2" ]] && SM=1
+  done
+
+  case "$SM" in
+  "1") FCTEXTAD1="Yes" ;;
+  "2") FCTEXTAD1="No" ;;
+  esac
+
+  ui_print "[*] Selected: $FCTEXTAD1"
+  ui_print ""
+
+  if [[ "$FCTEXTAD1" == "Yes" ]]; then
+    rm -rf "$MODPATH/system/system_ext/priv-app/WallpaperPickerGoogleRelease/WallpaperPickerGoogleRelease.apk"
+
+  elif [[ "$FCTEXTAD1" == "No" ]]; then
+    rm -rf "$MODPATH/system/system_ext/priv-app/WallpaperPickerGoogleRelease/WallpaperPickerGoogleReleaseNew.apk"
   fi
 
   ui_print "[*] Clearing system cache to make it work properly..."
